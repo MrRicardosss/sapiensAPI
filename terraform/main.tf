@@ -153,7 +153,6 @@ resource "aws_eip" "ip" {
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  count         = 0
   instance_id   = module.ec2_instance.id
   allocation_id = resource.aws_eip.ip.id
   depends_on = [

@@ -33,7 +33,7 @@ locals {
   public_ssh_key = file("${path.module}/id_rsa.pub")
 
   ip_address_1 = "92.70.51.57"
-  ip_address_2 = ""
+  ip_address_2 = "94.60.165.4"
 
   root_volume_size_gb = 30
   instance_type = "m8g.large"

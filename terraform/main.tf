@@ -29,14 +29,14 @@ provider "aws" {
 # ---------- INPUT --------------------- 
 
 locals {
-  prefix = "ric"
+  prefix         = "ric"
   public_ssh_key = file("${path.module}/id_rsa.pub")
 
   ip_address_1 = "92.70.51.57"
   ip_address_2 = "94.60.165.4"
 
   root_volume_size_gb = 30
-  instance_type = "m8g.large"
+  instance_type       = "m8g.large"
 
   cannonical_aws_account_id = "099720109477"
 }
@@ -45,7 +45,7 @@ locals {
 # ---------- DATA -------------------
 data "aws_ami" "ubuntu_ami" {
   most_recent = true
-  owners      = [local.cannonical_aws_account_id] 
+  owners      = [local.cannonical_aws_account_id]
 
   filter {
     name   = "name"
@@ -66,6 +66,52 @@ data "aws_ami" "ubuntu_ami" {
 
 # ------------- RESOURCES -----------------------
 
+
+# Filter out local zones, which are not currently supported 
+# with managed node groups
+data "aws_availability_zones" "available" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.13.0"
+
+  name = "ric-vpc"
+
+  cidr = "10.0.0.0/16"
+  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+
+  private_subnets  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets   = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  database_subnets = ["10.0.7.0/24", "10.0.8.0/24", "10.0.9.0/24"]
+
+  database_subnet_group_name = "rds_subnet_group"
+
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
+
+  create_database_subnet_group       = true
+  create_database_subnet_route_table = true
+
+  enable_flow_log       = true
+  flow_log_traffic_type = "REJECT"
+
+  create_flow_log_cloudwatch_log_group = true
+  create_flow_log_cloudwatch_iam_role  = true
+  flow_log_max_aggregation_interval    = 60
+
+  tags = {
+    Name = "ric"
+  }
+
+}
+
+
 resource "aws_ebs_encryption_by_default" "enabled" {
   enabled = true
 }
@@ -85,10 +131,10 @@ module "https_443_security_group" {
 }
 
 module "ssh_security_group" {
-  name                = "ssh_security_group"
-  source              = "terraform-aws-modules/security-group/aws//modules/ssh"
-  version             = "~> 5.0"
-  vpc_id              = module.vpc.vpc_id
+  name    = "ssh_security_group"
+  source  = "terraform-aws-modules/security-group/aws//modules/ssh"
+  version = "~> 5.0"
+  vpc_id  = module.vpc.vpc_id
   ingress_cidr_blocks = [
     local.ip_address_1,
     local.ip_address_2,
@@ -97,26 +143,26 @@ module "ssh_security_group" {
 
 module "http_80_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/http-80"
-  version = "~> 3.0"
+  version = "~> 5.0"
+
   name = "http_80_security_group"
 
-  vpc_id              = module.vpc.vpc_id
-  ingress_cidr_blocks = [module.vpc.vpc_cidr_block]
+  vpc_id = module.vpc.vpc_id
 }
 
 module "ec2_instance" {
   create = true
 
-  ami       = data.aws_ami.ubuntu_ami.id
-  source    = "terraform-aws-modules/ec2-instance/aws"
+  ami    = data.aws_ami.ubuntu_ami.id
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   name = "${local.prefix}-machine"
 
   instance_type = local.instance_type
 
-  key_name               = resource.aws_key_pair.default.key_name
-  subnet_id              = module.vpc.public_subnets[0]
-  monitoring             = true
+  key_name   = resource.aws_key_pair.default.key_name
+  subnet_id  = module.vpc.public_subnets[0]
+  monitoring = true
 
   vpc_security_group_ids = [
     module.ssh_security_group.security_group_id,
@@ -131,7 +177,7 @@ module "ec2_instance" {
   ]
 
   instance_tags = {
-    Name       = "${local.prefix}-machine"
+    Name = "${local.prefix}-machine"
   }
 
   tags = {

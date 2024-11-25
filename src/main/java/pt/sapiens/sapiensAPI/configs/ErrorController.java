@@ -1,4 +1,4 @@
-package pt.sapiens.sapiensAPI.controllers;
+package pt.sapiens.sapiensAPI.configs;
 
 import org.hibernate.annotations.NotFound;
 import org.springframework.http.ResponseEntity;

@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pt.sapiens.sapiensAPI.applications.Application;
 import pt.sapiens.sapiensAPI.auth.User;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -33,6 +35,9 @@ public class Volunteer {
 
     @Column(nullable = false, unique = true)
     private String citizenNumber;
+
+    @OneToMany
+    private List<Application> applications;
 
     @Column(nullable = false)
     @CreationTimestamp

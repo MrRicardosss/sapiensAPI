@@ -1,39 +1,25 @@
-package pt.sapiens.sapiensAPI.organizations;
+package pt.sapiens.sapiensAPI.auth;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import pt.sapiens.sapiensAPI.auth.User;
 
 import java.util.Date;
 
 @Entity
 @Data
-public class Organization {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne
-    @JoinColumn(nullable = false, unique = true)
-    private User user;
-
     @Column(nullable = false, unique = true)
-    private String name;
+    private String email;
 
     @Column(nullable = false)
-    private String profilePicture;
-
-    @Column
-    private String website;
-
-    @Column(nullable = false)
-    private String phoneNumber;
-
-    @Column(nullable = false)
-    private String address;
+    private String password;
 
     @Column(nullable = false)
     @CreationTimestamp

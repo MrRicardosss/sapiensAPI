@@ -5,7 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.Id;
+
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,4 +20,12 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
+    @CreationTimestamp
+    private Date createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private Date updatedAt;
 }

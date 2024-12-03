@@ -5,8 +5,10 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import pt.sapiens.sapiensAPI.auth.User;
+import pt.sapiens.sapiensAPI.offers.Offer;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,6 +36,10 @@ public class Organization {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany
+    @JoinColumn
+    private List<Offer> offers;
 
     @Column(nullable = false)
     @CreationTimestamp

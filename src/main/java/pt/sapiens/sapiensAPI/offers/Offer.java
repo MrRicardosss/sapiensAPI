@@ -2,14 +2,15 @@ package pt.sapiens.sapiensAPI.offers;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pt.sapiens.sapiensAPI.applications.Application;
 import pt.sapiens.sapiensAPI.categories.Category;
 import pt.sapiens.sapiensAPI.municipalities.Municipality;
 import pt.sapiens.sapiensAPI.organizations.Organization;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -47,8 +48,12 @@ public class Offer {
     private Municipality municipality;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
-    private Boolean open;
+    @Enumerated(EnumType.STRING)
+    private OfferStatus offerStatus;
+
+    @OneToMany
+    @JoinColumn
+    private List<Application> applications;
 
     @Column(nullable = false)
     @CreationTimestamp

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pt.sapiens.sapiensAPI.offers.Offer;
 import pt.sapiens.sapiensAPI.volunteers.Volunteer;
 
 import java.util.Date;
@@ -18,11 +19,15 @@ public class Application {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ApplicationStatus applicationStatus;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Volunteer volunteer;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Offer offer;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -32,8 +37,3 @@ public class Application {
     @UpdateTimestamp
     private Date updatedAt;
 }
-
-/*
-offerId int [not null, ref: > Offers.id]
-volunteerId int [not null, ref: > Volunteers.id]
-*/

@@ -1,6 +1,6 @@
 package pt.sapiens.sapiensAPI.applications;
 
-public enum Status {
+public enum ApplicationStatus {
     PENDING,
     ACCEPTED,
     REFUSED

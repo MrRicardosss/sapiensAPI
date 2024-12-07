@@ -1,15 +1,12 @@
 package pt.sapiens.sapiensAPI.categories;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -23,9 +20,11 @@ public class Category {
 
     @Column(nullable = false)
     @CreationTimestamp
-    private Date createdAt;
+    @JsonIgnore
+    private Timestamp createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private Date updatedAt;
+    @JsonIgnore
+    private Timestamp updatedAt;
 }

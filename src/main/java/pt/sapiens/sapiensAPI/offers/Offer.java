@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.offers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,30 +10,22 @@ import pt.sapiens.sapiensAPI.categories.Category;
 import pt.sapiens.sapiensAPI.municipalities.Municipality;
 import pt.sapiens.sapiensAPI.organizations.Organization;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
 public class Offer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Organization organization;
 
     @Column(nullable = false)
     private String title;
 
     @Column
     private String description;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Category category;
 
     @Column(nullable = false)
     private Date startDate;
@@ -43,23 +36,33 @@ public class Offer {
     @Column(nullable = false)
     private String address;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Municipality municipality;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OfferStatus offerStatus;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Organization organization;
 
     @OneToMany
     @JoinColumn
     private List<Application> applications;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Municipality municipality;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Category category;
+
     @Column(nullable = false)
     @CreationTimestamp
-    private Date createdAt;
+    @JsonIgnore
+    private Timestamp createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private Date updatedAt;
+    @JsonIgnore
+    private Timestamp updatedAt;
 }

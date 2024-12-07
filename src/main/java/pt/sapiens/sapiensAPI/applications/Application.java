@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.applications;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import pt.sapiens.sapiensAPI.offers.Offer;
 import pt.sapiens.sapiensAPI.volunteers.Volunteer;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -31,9 +32,11 @@ public class Application {
 
     @Column(nullable = false)
     @CreationTimestamp
-    private Date createdAt;
+    @JsonIgnore
+    private Timestamp createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private Date updatedAt;
+    @JsonIgnore
+    private Timestamp updatedAt;
 }

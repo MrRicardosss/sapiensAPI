@@ -1,10 +1,12 @@
 package pt.sapiens.sapiensAPI.municipalities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -19,9 +21,11 @@ public class Municipality {
 
     @Column(nullable = false)
     @CreationTimestamp
-    private Date createdAt;
+    @JsonIgnore
+    private Timestamp createdAt;
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private Date updatedAt;
+    @JsonIgnore
+    private Timestamp updatedAt;
 }

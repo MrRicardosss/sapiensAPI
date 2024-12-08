@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private long id;
 
@@ -24,13 +24,13 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp
     @JsonIgnore
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @UpdateTimestamp(source = SourceType.DB)
     @JsonIgnore
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 }

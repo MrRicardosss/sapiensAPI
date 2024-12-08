@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 import pt.sapiens.sapiensAPI.applications.Application;
 import pt.sapiens.sapiensAPI.categories.Category;
 import pt.sapiens.sapiensAPI.municipalities.Municipality;
 import pt.sapiens.sapiensAPI.organizations.Organization;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Data
 public class Offer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
@@ -56,13 +57,13 @@ public class Offer {
     @JoinColumn(nullable = false)
     private Category category;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp
     @JsonIgnore
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @UpdateTimestamp(source = SourceType.DB)
     @JsonIgnore
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 }

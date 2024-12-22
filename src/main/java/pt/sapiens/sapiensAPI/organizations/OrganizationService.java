@@ -2,8 +2,9 @@ package pt.sapiens.sapiensAPI.organizations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.sapiens.sapiensAPI.auth.User;
-import pt.sapiens.sapiensAPI.auth.UserRepository;
+import pt.sapiens.sapiensAPI.users.User;
+import pt.sapiens.sapiensAPI.users.UserRepository;
+import pt.sapiens.sapiensAPI.users.UserType;
 import pt.sapiens.sapiensAPI.organizations.DTOs.OrganizationCreateDTO;
 
 import java.util.Optional;
@@ -23,8 +24,11 @@ public class OrganizationService {
     public Organization createOrganization(OrganizationCreateDTO organizationCreateDTO) {
         User user = new User();
 
+        user.setProfilePicture(organizationCreateDTO.getImageUrl());
         user.setEmail(organizationCreateDTO.getEmail());
         user.setPassword(organizationCreateDTO.getPassword());
+        user.setPhoneNumber(organizationCreateDTO.getPhoneNumber());
+        user.setUserType(UserType.ORGANIZATION);
 
         userRepository.save(user);
 
@@ -32,7 +36,6 @@ public class OrganizationService {
 
         organization.setName(organizationCreateDTO.getName());
         organization.setWebsite(organizationCreateDTO.getWebsite());
-        organization.setPhoneNumber(organizationCreateDTO.getPhoneNumber());
         organization.setAddress(organizationCreateDTO.getAddress());
         organization.setUser(user);
 

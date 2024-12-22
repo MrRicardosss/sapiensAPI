@@ -2,14 +2,21 @@ package pt.sapiens.sapiensAPI.volunteers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.sapiens.sapiensAPI.auth.User;
-import pt.sapiens.sapiensAPI.auth.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
+import pt.sapiens.sapiensAPI.users.User;
+import pt.sapiens.sapiensAPI.users.UserRepository;
+import pt.sapiens.sapiensAPI.users.UserType;
+import pt.sapiens.sapiensAPI.utils.ImageService;
 import pt.sapiens.sapiensAPI.volunteers.DTOs.VolunteerCreateDTO;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 public class VolunteerService {
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private VolunteerRepository volunteerRepository;
@@ -26,6 +33,9 @@ public class VolunteerService {
 
         user.setEmail(volunteerCreateDTO.getEmail());
         user.setPassword(volunteerCreateDTO.getPassword());
+        user.setProfilePicture(volunteerCreateDTO.getImageUrl());
+        user.setPhoneNumber(volunteerCreateDTO.getPhoneNumber());
+        user.setUserType(UserType.VOLUNTEER);
 
         userRepository.save(user);
 
@@ -35,7 +45,6 @@ public class VolunteerService {
         volunteer.setFirstName(volunteerCreateDTO.getFirstName());
         volunteer.setLastName(volunteerCreateDTO.getLastName());
         volunteer.setBirthday(volunteerCreateDTO.getBirthday());
-        volunteer.setPhoneNumber(volunteerCreateDTO.getPhoneNumber());
         volunteer.setCivilId(volunteerCreateDTO.getCivilId());
 
         volunteerRepository.save(volunteer);

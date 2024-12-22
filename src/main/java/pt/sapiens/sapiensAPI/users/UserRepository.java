@@ -1,4 +1,4 @@
-package pt.sapiens.sapiensAPI.auth;
+package pt.sapiens.sapiensAPI.users;
 
 import org.springframework.data.repository.CrudRepository;
 

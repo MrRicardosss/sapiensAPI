@@ -13,6 +13,8 @@ public class OrganizationCreateDTO {
     @Size(max = 50)
     private String name;
 
+    private String imageUrl;
+
     @NotNull
     @Email
     private String email;

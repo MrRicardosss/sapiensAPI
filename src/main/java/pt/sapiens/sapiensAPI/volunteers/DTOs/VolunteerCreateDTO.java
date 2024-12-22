@@ -3,6 +3,7 @@ package pt.sapiens.sapiensAPI.volunteers.DTOs;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.Date;
 
@@ -16,6 +17,8 @@ public class VolunteerCreateDTO {
     @NotNull
     @Size(min = 3, max = 12)
     private String lastName;
+
+    private String imageUrl;
 
     @NotNull
     @Email

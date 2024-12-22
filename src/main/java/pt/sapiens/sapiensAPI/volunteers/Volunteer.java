@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 import pt.sapiens.sapiensAPI.applications.Application;
-import pt.sapiens.sapiensAPI.auth.User;
+import pt.sapiens.sapiensAPI.users.User;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -29,20 +28,13 @@ public class Volunteer {
     private String lastName;
 
     @Column(nullable = false)
-    @ColumnDefault("'https://dummyimage.com/500x500.png/cc0000/ffffff'")
-    private String profilePicture = "https://dummyimage.com/500x500.png/cc0000/ffffff";
-
-    @Column(nullable = false)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date birthday;
 
     @Column(nullable = false, unique = true)
-    private String phoneNumber;
-
-    @Column(nullable = false, unique = true)
     private String civilId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(nullable = false, unique = true)
     private User user;
 

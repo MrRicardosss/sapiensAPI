@@ -1,6 +1,7 @@
 package pt.sapiens.sapiensAPI.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pt.sapiens.sapiensAPI.entities.User;
 import pt.sapiens.sapiensAPI.entities.Volunteer;
@@ -13,9 +14,8 @@ import java.util.Optional;
 
 @Service
 public class VolunteerService {
-
     @Autowired
-    private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ImageService imageService;
@@ -33,7 +33,7 @@ public class VolunteerService {
     public Volunteer createVolunteer(VolunteerCreateDTO volunteerCreateDTO) {
         User user = new User();
         user.setEmail(volunteerCreateDTO.getEmail());
-        user.setPassword(userService.encryptPassword(volunteerCreateDTO.getPassword()));
+        user.setPassword(volunteerCreateDTO.getPassword(), passwordEncoder);
         user.setProfilePicture(volunteerCreateDTO.getImageUrl());
         user.setPhoneNumber(volunteerCreateDTO.getPhoneNumber());
         user.setRole(UserType.VOLUNTEER);

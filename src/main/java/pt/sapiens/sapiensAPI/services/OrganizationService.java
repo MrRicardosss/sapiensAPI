@@ -1,6 +1,7 @@
 package pt.sapiens.sapiensAPI.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pt.sapiens.sapiensAPI.entities.Organization;
 import pt.sapiens.sapiensAPI.entities.User;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Service
 public class OrganizationService {
     @Autowired
-    private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -30,7 +31,7 @@ public class OrganizationService {
         User user = new User();
         user.setProfilePicture(organizationCreateDTO.getImageUrl());
         user.setEmail(organizationCreateDTO.getEmail());
-        user.setPassword(userService.encryptPassword(organizationCreateDTO.getPassword()));
+        user.setPassword(organizationCreateDTO.getPassword(), passwordEncoder);
         user.setPhoneNumber(organizationCreateDTO.getPhoneNumber());
         user.setRole(UserType.ORGANIZATION);
 

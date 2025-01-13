@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class VolunteerService {
     }
 
     public Volunteer createVolunteer(VolunteerCreateDTO volunteerCreateDTO) {
+
         User user = new User();
         user.setEmail(volunteerCreateDTO.getEmail());
         user.setPassword(volunteerCreateDTO.getPassword(), passwordEncoder);
@@ -46,8 +48,6 @@ public class VolunteerService {
         volunteer.setLastName(volunteerCreateDTO.getLastName());
         volunteer.setBirthday(volunteerCreateDTO.getBirthday());
         volunteer.setCivilId(volunteerCreateDTO.getCivilId());
-
-        volunteerRepository.save(volunteer);
 
         return volunteer;
     }

@@ -3,8 +3,10 @@ package pt.sapiens.sapiensAPI.controllers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pt.sapiens.sapiensAPI.DTOs.VolunteerCreateDTO;
+import pt.sapiens.sapiensAPI.entities.UserDetailsImpl;
 import pt.sapiens.sapiensAPI.entities.Volunteer;
 import pt.sapiens.sapiensAPI.services.VolunteerService;
 
@@ -18,8 +20,10 @@ public class VolunteerController {
     private VolunteerService volunteerService;
 
     @GetMapping("/me")
-    public ResponseEntity<String> me() {
-        return ResponseEntity.ok("me");
+    public ResponseEntity me() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return ResponseEntity.ok(userDetails);
     }
 
     @GetMapping("/{id}")

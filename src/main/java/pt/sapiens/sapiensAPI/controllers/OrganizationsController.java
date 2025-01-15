@@ -2,8 +2,8 @@ package pt.sapiens.sapiensAPI.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pt.sapiens.sapiensAPI.DTOs.ApiResponse;
 import pt.sapiens.sapiensAPI.DTOs.OrganizationCreateDTO;
 import pt.sapiens.sapiensAPI.entities.Organization;
 import pt.sapiens.sapiensAPI.services.OrganizationService;
@@ -17,17 +17,19 @@ public class OrganizationsController {
     private OrganizationService organizationService;
 
     @GetMapping("/me")
-    public ResponseEntity<String> me() {
-        return ResponseEntity.ok("me");
+    public ApiResponse<?> me() {
+        Optional<Organization> organization = organizationService.me();
+
+        return new ApiResponse<>(organization);
     }
 
     @GetMapping("/{id}")
-    public Optional<Organization> get(@PathVariable int id) {
-        return organizationService.getOrganization(id);
+    public ApiResponse<?> get(@PathVariable int id) {
+        return new ApiResponse<>(organizationService.getOrganization(id));
     }
 
     @PostMapping
-    public Organization create(@RequestBody @Valid OrganizationCreateDTO organizationCreateDTO) {
-        return organizationService.createOrganization(organizationCreateDTO);
+    public ApiResponse<?> create(@RequestBody @Valid OrganizationCreateDTO organizationCreateDTO) {
+        return new ApiResponse<>(organizationService.createOrganization(organizationCreateDTO));
     }
 }

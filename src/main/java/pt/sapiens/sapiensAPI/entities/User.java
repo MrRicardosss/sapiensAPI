@@ -2,7 +2,7 @@ package pt.sapiens.sapiensAPI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
@@ -13,7 +13,11 @@ import pt.sapiens.sapiensAPI.enums.UserType;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +33,7 @@ public class User {
 
     @Column(nullable = false)
     @ColumnDefault("'https://dummyimage.com/500x500.png/cc0000/ffffff'")
-    private String profilePicture = "https://dummyimage.com/500x500.png/cc0000/ffffff";
+    private String profilePicture;
 
     @Column(nullable = false)
     private String phoneNumber;

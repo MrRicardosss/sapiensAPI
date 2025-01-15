@@ -18,13 +18,23 @@ public class VolunteerService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ImageService imageService;
-
-    @Autowired
     private VolunteerRepository volunteerRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    public Optional<Volunteer> me() {
+        Optional<User> user = userService.getUserByUserDetails();
+
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return volunteerRepository.findByUserId(user.get().getId());
+    }
 
     public Optional<Volunteer> getVolunteer(long id) {
         return volunteerRepository.findById(id);
@@ -32,21 +42,25 @@ public class VolunteerService {
 
     public Volunteer createVolunteer(VolunteerCreateDTO volunteerCreateDTO) {
 
-        User user = new User();
-        user.setEmail(volunteerCreateDTO.getEmail());
+        User user = User.builder()
+                .email(volunteerCreateDTO.getEmail())
+                .profilePicture(volunteerCreateDTO.getImageUrl())
+                .phoneNumber(volunteerCreateDTO.getPhoneNumber())
+                .role(UserType.VOLUNTEER)
+                .build();
+
         user.setPassword(volunteerCreateDTO.getPassword(), passwordEncoder);
-        user.setProfilePicture(volunteerCreateDTO.getImageUrl());
-        user.setPhoneNumber(volunteerCreateDTO.getPhoneNumber());
-        user.setRole(UserType.VOLUNTEER);
+        user = userRepository.save(user);
 
-        userRepository.save(user);
+        Volunteer volunteer = Volunteer.builder()
+                .user(user)
+                .firstName(volunteerCreateDTO.getFirstName())
+                .lastName(volunteerCreateDTO.getLastName())
+                .birthday(volunteerCreateDTO.getBirthday())
+                .civilId(volunteerCreateDTO.getCivilId())
+                .build();
 
-        Volunteer volunteer = new Volunteer();
-        volunteer.setUser(user);
-        volunteer.setFirstName(volunteerCreateDTO.getFirstName());
-        volunteer.setLastName(volunteerCreateDTO.getLastName());
-        volunteer.setBirthday(volunteerCreateDTO.getBirthday());
-        volunteer.setCivilId(volunteerCreateDTO.getCivilId());
+        volunteerRepository.save(volunteer);
 
         return volunteer;
     }

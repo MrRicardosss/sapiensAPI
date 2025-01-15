@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pt.sapiens.sapiensAPI.entities.UserDetailsImpl;
@@ -38,11 +39,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = authHeader.replace("Bearer ", "");
 
         final String email = jwtService.getSubject(token);
-        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(email);
+        if (email.isEmpty()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        try {
+            UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(email);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        }catch (UsernameNotFoundException e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         filterChain.doFilter(request, response);
     }

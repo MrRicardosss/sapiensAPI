@@ -33,6 +33,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/volunteers/me").hasAuthority("VOLUNTEER")
+                        .requestMatchers(HttpMethod.GET, "/organizations/me").hasAuthority("ORGANIZATION")
                         .anyRequest().permitAll()
         )
                 .addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

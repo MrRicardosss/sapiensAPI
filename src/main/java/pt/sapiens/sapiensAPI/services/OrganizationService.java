@@ -23,26 +23,40 @@ public class OrganizationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
+    public Optional<Organization> me() {
+        Optional<User> user = userService.getUserByUserDetails();
+
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return organizationRepository.findByUserId(user.get().getId());
+    }
+
     public Optional<Organization> getOrganization(long id) {
         return organizationRepository.findById(id);
     }
 
     public Organization createOrganization(OrganizationCreateDTO organizationCreateDTO) {
-        User user = new User();
-        user.setProfilePicture(organizationCreateDTO.getImageUrl());
-        user.setEmail(organizationCreateDTO.getEmail());
+        User user = User.builder()
+                .email(organizationCreateDTO.getEmail())
+                .profilePicture(organizationCreateDTO.getImageUrl())
+                .phoneNumber(organizationCreateDTO.getPhoneNumber())
+                .role(UserType.ORGANIZATION)
+                .build();
+
         user.setPassword(organizationCreateDTO.getPassword(), passwordEncoder);
-        user.setPhoneNumber(organizationCreateDTO.getPhoneNumber());
-        user.setRole(UserType.ORGANIZATION);
+        user = userRepository.save(user);
 
-        userRepository.save(user);
-
-        Organization organization = new Organization();
-        organization.setName(organizationCreateDTO.getName());
-        organization.setWebsite(organizationCreateDTO.getWebsite());
-        organization.setAddress(organizationCreateDTO.getAddress());
-        organization.setUser(user);
-
+        Organization organization = Organization.builder()
+                .name(organizationCreateDTO.getName())
+                .website(organizationCreateDTO.getWebsite())
+                .address(organizationCreateDTO.getAddress())
+                .user(user)
+                .build();
         organizationRepository.save(organization);
 
         return organization;

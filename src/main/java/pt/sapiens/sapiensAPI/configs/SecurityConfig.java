@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pt.sapiens.sapiensAPI.enums.UserType;
 import pt.sapiens.sapiensAPI.services.UserDetailsServiceImpl;
 
 @Configuration
@@ -34,6 +33,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/volunteers/me").hasAuthority("VOLUNTEER")
                         .requestMatchers(HttpMethod.GET, "/organizations/me").hasAuthority("ORGANIZATION")
+                        .requestMatchers(HttpMethod.GET, "/volunteers/{id}").hasAuthority("ORGANIZATION")
                         .anyRequest().permitAll()
         )
                 .addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

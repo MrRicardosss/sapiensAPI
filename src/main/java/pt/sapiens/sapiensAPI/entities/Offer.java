@@ -40,7 +40,7 @@ public class Offer {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OfferStatus offerStatus;
+    private OfferStatus offerStatus = OfferStatus.OPEN;
 
     @ManyToOne
     @JoinColumn(nullable = false)

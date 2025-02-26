@@ -15,7 +15,7 @@ public class OfferCreateDTO {
     private String description;
 
     @NotNull
-    private int categoryId;
+    private long categoryId;
 
     @NotNull
     @Future
@@ -31,5 +31,5 @@ public class OfferCreateDTO {
     private String address;
 
     @NotNull
-    private int municipalityId;
+    private long municipalityId;
 }

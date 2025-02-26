@@ -34,6 +34,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/volunteers/me").hasAuthority("VOLUNTEER")
                         .requestMatchers(HttpMethod.GET, "/organizations/me").hasAuthority("ORGANIZATION")
                         .requestMatchers(HttpMethod.GET, "/volunteers/{id}").hasAuthority("ORGANIZATION")
+                        .requestMatchers(HttpMethod.POST, "/offers").hasAuthority("ORGANIZATION")
+                        .requestMatchers(HttpMethod.DELETE, "/offers/{id}").hasAuthority("ORGANIZATION")
                         .anyRequest().permitAll()
         )
                 .addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

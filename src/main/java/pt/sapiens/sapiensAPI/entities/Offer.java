@@ -38,7 +38,7 @@ public class Offer {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private OfferStatus offerStatus = OfferStatus.OPEN;
 

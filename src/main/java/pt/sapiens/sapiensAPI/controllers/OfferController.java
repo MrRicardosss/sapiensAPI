@@ -9,6 +9,7 @@ import pt.sapiens.sapiensAPI.services.OfferService;
 
 @RestController
 @RequestMapping("/offers")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OfferController {
 
     @Autowired
@@ -20,11 +21,13 @@ public class OfferController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> get(@PathVariable int id) {
         return new ApiResponse<>(offerService.get(id));
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> create(@RequestBody @Valid OfferCreateDTO offerCreateDTO) {
         return new ApiResponse<>(offerService.create(offerCreateDTO));
     }

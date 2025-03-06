@@ -12,24 +12,28 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/volunteers")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class VolunteerController {
 
     @Autowired
     private VolunteerService volunteerService;
 
     @GetMapping("/me")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> me() {
         Optional<Volunteer> volunteer = volunteerService.me();
         return new ApiResponse<>(volunteer);
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> get(@PathVariable int id) {
         Optional<Volunteer> volunteer = volunteerService.getVolunteer(id);
         return new ApiResponse<>(volunteer);
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> create(@RequestBody @Valid VolunteerCreateDTO volunteerCreateDTO) {
         Volunteer volunteer = volunteerService.createVolunteer(volunteerCreateDTO);
         return new ApiResponse<>(volunteer);

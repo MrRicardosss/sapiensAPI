@@ -1,14 +1,9 @@
 package pt.sapiens.sapiensAPI.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
-import org.hibernate.annotations.UpdateTimestamp;
-import pt.sapiens.sapiensAPI.enums.OfferStatus;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,17 +25,18 @@ public class Offer {
     private String description;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date startDate;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date endDate;
 
     @Column(nullable = false)
     private String address;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private OfferStatus offerStatus = OfferStatus.OPEN;
+    @Column(nullable = false)
+    private boolean open;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -57,14 +53,4 @@ public class Offer {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Category category;
-
-    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @CreationTimestamp
-    @JsonIgnore
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    @UpdateTimestamp(source = SourceType.DB)
-    @JsonIgnore
-    private LocalDateTime updatedAt;
 }

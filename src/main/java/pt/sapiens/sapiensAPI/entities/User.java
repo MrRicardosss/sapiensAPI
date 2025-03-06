@@ -3,14 +3,8 @@ package pt.sapiens.sapiensAPI.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pt.sapiens.sapiensAPI.enums.UserType;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,7 +26,6 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @ColumnDefault("'https://dummyimage.com/500x500.png/cc0000/ffffff'")
     private String profilePicture;
 
     @Column(nullable = false)
@@ -41,16 +34,6 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType role;
-
-    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @CreationTimestamp
-    @JsonIgnore
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    @UpdateTimestamp(source = SourceType.DB)
-    @JsonIgnore
-    private LocalDateTime updatedAt;
 
     public void setPassword(String password, PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);

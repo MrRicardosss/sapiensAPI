@@ -23,19 +23,6 @@ public class VolunteerService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
-
-    public Optional<Volunteer> me() {
-        Optional<User> user = userService.getUserByUserDetails();
-
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return volunteerRepository.findByUserId(user.get().getId());
-    }
-
     public Optional<Volunteer> getVolunteer(long id) {
         return volunteerRepository.findById(id);
     }

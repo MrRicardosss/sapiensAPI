@@ -7,7 +7,6 @@ import pt.sapiens.sapiensAPI.entities.Category;
 import pt.sapiens.sapiensAPI.entities.Municipality;
 import pt.sapiens.sapiensAPI.entities.Offer;
 import pt.sapiens.sapiensAPI.entities.Organization;
-import pt.sapiens.sapiensAPI.enums.OfferStatus;
 import pt.sapiens.sapiensAPI.repositories.CategoryRepository;
 import pt.sapiens.sapiensAPI.repositories.MunicipalityRepository;
 import pt.sapiens.sapiensAPI.repositories.OfferRepository;
@@ -31,7 +30,7 @@ public class OfferService {
     private MunicipalityRepository municipalityRepository;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     public Iterable<Offer> getAll() {
         return offerRepository.findAll();
@@ -43,7 +42,7 @@ public class OfferService {
 
     public Object create(OfferCreateDTO offerCreateDTO) {
         try {
-            Optional<Organization> organization = organizationRepository.findByUserId(userService.getUserByUserDetails().get().getId());
+            Optional<Organization> organization = organizationRepository.findByUserId(authService.getUserByUserDetails().get().getId());
             if (organization.isEmpty()) {
                 throw new RuntimeException();
             }
@@ -64,7 +63,7 @@ public class OfferService {
                     .startDate(offerCreateDTO.getStartDate())
                     .endDate(offerCreateDTO.getEndDate())
                     .address(offerCreateDTO.getAddress())
-                    .offerStatus(OfferStatus.OPEN)
+                    .open(true)
                     .organization(organization.get())
                     .municipality(municipality.get())
                     .category(category.get())

@@ -16,13 +16,6 @@ public class OrganizationsController {
     @Autowired
     private OrganizationService organizationService;
 
-    @GetMapping("/me")
-    public ApiResponse<?> me() {
-        Optional<Organization> organization = organizationService.me();
-
-        return new ApiResponse<>(organization);
-    }
-
     @GetMapping("/{id}")
     public ApiResponse<?> get(@PathVariable int id) {
         return new ApiResponse<>(organizationService.getOrganization(id));

@@ -1,14 +1,7 @@
 package pt.sapiens.sapiensAPI.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -19,14 +12,4 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @CreationTimestamp
-    @JsonIgnore
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    @UpdateTimestamp(source = SourceType.DB)
-    @JsonIgnore
-    private LocalDateTime updatedAt;
 }

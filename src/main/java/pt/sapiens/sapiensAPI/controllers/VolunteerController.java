@@ -17,12 +17,6 @@ public class VolunteerController {
     @Autowired
     private VolunteerService volunteerService;
 
-    @GetMapping("/me")
-    public ApiResponse<?> me() {
-        Optional<Volunteer> volunteer = volunteerService.me();
-        return new ApiResponse<>(volunteer);
-    }
-
     @GetMapping("/{id}")
     public ApiResponse<?> get(@PathVariable int id) {
         Optional<Volunteer> volunteer = volunteerService.getVolunteer(id);

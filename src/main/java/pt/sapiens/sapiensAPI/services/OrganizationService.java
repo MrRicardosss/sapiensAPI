@@ -23,19 +23,6 @@ public class OrganizationService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
-
-    public Optional<Organization> me() {
-        Optional<User> user = userService.getUserByUserDetails();
-
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return organizationRepository.findByUserId(user.get().getId());
-    }
-
     public Optional<Organization> getOrganization(long id) {
         return organizationRepository.findById(id);
     }

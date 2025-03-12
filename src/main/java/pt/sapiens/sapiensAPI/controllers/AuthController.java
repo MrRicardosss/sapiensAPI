@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import pt.sapiens.sapiensAPI.DTOs.ApiResponse;
 import pt.sapiens.sapiensAPI.DTOs.AuthDTO;
 import pt.sapiens.sapiensAPI.services.AuthService;
-import pt.sapiens.sapiensAPI.services.JwtService;
 
 @RestController
 @RequestMapping("/auth")

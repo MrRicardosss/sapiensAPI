@@ -10,6 +10,8 @@ import pt.sapiens.sapiensAPI.repositories.ApplicationRepository;
 import pt.sapiens.sapiensAPI.repositories.OfferRepository;
 import pt.sapiens.sapiensAPI.repositories.VolunteerRepository;
 
+import java.util.List;
+
 @Service
 public class ApplicationService {
 
@@ -24,6 +26,16 @@ public class ApplicationService {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    public ApiResponse<?> get(long id) {
+        List<Application> applications = applicationRepository.findByOfferId(id);
+
+        if (applications.isEmpty()) {
+            return new ApiResponse<>(null);
+        }
+
+        return new ApiResponse<>(applications);
+    }
 
     public ApiResponse<?> create(long id) {
         try {

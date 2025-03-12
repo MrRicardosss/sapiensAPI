@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonIgnore
     private Offer offer;
 }

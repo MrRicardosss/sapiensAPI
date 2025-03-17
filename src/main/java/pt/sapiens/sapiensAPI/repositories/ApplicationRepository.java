@@ -8,4 +8,6 @@ import java.util.List;
 public interface ApplicationRepository extends CrudRepository<Application, Long> {
 
     List<Application> findByOfferId(long id);
+
+    boolean existsByVolunteerIdAndOfferId(long volunteerId, long offerId);
 }

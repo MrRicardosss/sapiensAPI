@@ -42,11 +42,17 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/auth/me").authenticated()
+
                         .requestMatchers(HttpMethod.GET, "/volunteers/{id}").hasAuthority("ORGANIZATION")
+
                         .requestMatchers(HttpMethod.POST, "/offers").hasAuthority("ORGANIZATION")
                         .requestMatchers(HttpMethod.DELETE, "/offers/{id}").hasAuthority("ORGANIZATION")
+
                         .requestMatchers(HttpMethod.POST, "/applications/{id}").hasAuthority("VOLUNTEER")
-                        .requestMatchers(HttpMethod.GET, "/applications/{id}").hasAuthority("ORGANIZATION")
+                        .requestMatchers(HttpMethod.GET, "/applications/me").hasAuthority("VOLUNTEER")
+                        .requestMatchers(HttpMethod.DELETE, "/applications/{id}").hasAuthority("VOLUNTEER")
+                        .requestMatchers(HttpMethod.GET, "/applications/org/{id}").hasAuthority("ORGANIZATION")
+
                         .anyRequest().permitAll()
         )
                 .addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

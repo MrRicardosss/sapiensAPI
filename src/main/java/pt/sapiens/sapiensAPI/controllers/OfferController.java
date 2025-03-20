@@ -29,7 +29,7 @@ public class OfferController {
         return new ApiResponse<>(offerService.create(offerCreateDTO));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         offerService.delete(id);
     }

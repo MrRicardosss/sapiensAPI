@@ -30,6 +30,10 @@ public class ApplicationService {
     @Autowired
     private OfferRepository offerRepository;
 
+    public List<Application> allVolApplications() {
+        return applicationRepository.findByVolunteerId(authService.getUserByUserDetails().get().getId());
+    }
+
     public ApiResponse<?> get(long id) {
         List<Application> applications = applicationRepository.findByOfferId(id);
 
@@ -39,26 +43,6 @@ public class ApplicationService {
 
         return new ApiResponse<>(applications);
     }
-
-    /*
-    public ApiResponse<?> create(long id) {
-        try {
-            Volunteer volunteer = volunteerRepository.findByUserId(authService.getUserByUserDetails().get().getId()).orElseThrow(RuntimeException::new);
-            Offer offer = offerRepository.findById(id).orElseThrow(RuntimeException::new);
-
-            Application application = Application.builder()
-                    .volunteer(volunteer)
-                    .offer(offer)
-                    .build();
-            application = applicationRepository.save(application);
-
-            return new ApiResponse<>(application);
-
-        } catch (RuntimeException e) {
-            return new ApiResponse<>(null);
-        }
-    }
-     */
 
     public ApiResponse<?> create(long id) {
         try {
@@ -106,7 +90,11 @@ public class ApplicationService {
         }
     }
 
-    public boolean hasUserAppliedToOffer(long offerId, long volunteerId) {
+    public void delete(int id) {
+        applicationRepository.deleteById((long) id);
+    }
+
+    private boolean hasUserAppliedToOffer(long offerId, long volunteerId) {
         // Check if an application already exists for this volunteer and offer
         return applicationRepository.existsByVolunteerIdAndOfferId(volunteerId, offerId);
     }

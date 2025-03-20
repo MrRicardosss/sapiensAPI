@@ -14,9 +14,15 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @GetMapping("/{id}")
-    public ApiResponse<?> get(@PathVariable int id) {
-        return applicationService.get(id);
+    @GetMapping("/me")
+    public ApiResponse<?> getAll() {
+        return new ApiResponse<>(applicationService.allVolApplications());
+    }
+
+    @GetMapping("/org/{id}")
+    public ApiResponse<?> getAll(@PathVariable int id) {
+        // IMPLMENTAR ISTO
+        return new ApiResponse<>();
     }
 
     @PostMapping("/{id}")
@@ -24,7 +30,7 @@ public class ApplicationController {
         return applicationService.create(id);
     }
 
-    @RequestMapping(value = "/{id}/check", method = RequestMethod.HEAD)
+    @GetMapping("/{id}/check")
     public ResponseEntity<?> checkApplication(@PathVariable int id) {
         boolean hasApplied = applicationService.hasUserAppliedToOffer(id);
 
@@ -33,5 +39,10 @@ public class ApplicationController {
         } else {
             return ResponseEntity.ok().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        applicationService.delete(id);
     }
 }

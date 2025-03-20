@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/applications/{id}").hasAuthority("VOLUNTEER")
                         .requestMatchers(HttpMethod.GET, "/applications/me").hasAuthority("VOLUNTEER")
                         .requestMatchers(HttpMethod.DELETE, "/applications/{id}").hasAuthority("VOLUNTEER")
-                        .requestMatchers(HttpMethod.GET, "/applications/org/{id}").hasAuthority("ORGANIZATION")
+                        .requestMatchers(HttpMethod.GET, "/applications/offers/{id}").hasAuthority("ORGANIZATION")
 
                         .anyRequest().permitAll()
         )

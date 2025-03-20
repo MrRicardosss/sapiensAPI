@@ -15,14 +15,13 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @GetMapping("/me")
-    public ApiResponse<?> getAll() {
+    public ApiResponse<?> getAllMyApp() {
         return new ApiResponse<>(applicationService.allVolApplications());
     }
 
-    @GetMapping("/org/{id}")
-    public ApiResponse<?> getAll(@PathVariable int id) {
-        // IMPLMENTAR ISTO
-        return new ApiResponse<>();
+    @GetMapping("/offers/{id}")
+    public ApiResponse<?> getAllOffersApp(@PathVariable int id) {
+        return applicationService.get(id);
     }
 
     @PostMapping("/{id}")

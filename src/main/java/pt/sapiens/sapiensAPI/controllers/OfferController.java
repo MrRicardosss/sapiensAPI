@@ -26,6 +26,7 @@ public class OfferController {
         return new ApiResponse<>(offerService.get(id));
     }
 
+
     @PostMapping
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ApiResponse<?> create(@RequestBody @Valid OfferCreateDTO offerCreateDTO) {

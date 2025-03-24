@@ -31,7 +31,9 @@ public class ApplicationService {
     private OfferRepository offerRepository;
 
     public List<Application> allVolApplications() {
-        return applicationRepository.findByVolunteerId(authService.getUserByUserDetails().get().getId());
+        Optional<Volunteer> volunteer = volunteerRepository.findByUserId(authService.getUserByUserDetails().get().getId());
+
+        return volunteer.get().getApplications();
     }
 
     public ApiResponse<?> get(long id) {

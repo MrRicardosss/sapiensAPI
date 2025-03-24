@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,7 @@ public class Volunteer {
     @JoinColumn(nullable = false, unique = true)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "volunteer")
+    @JsonBackReference
     private List<Application> applications;
 }

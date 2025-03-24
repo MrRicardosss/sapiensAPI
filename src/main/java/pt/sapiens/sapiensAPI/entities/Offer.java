@@ -1,5 +1,6 @@
 package pt.sapiens.sapiensAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,8 +43,9 @@ public class Offer {
     @JoinColumn(nullable = false)
     private Organization organization;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "offer")
+    @JsonBackReference
+    // @JoinColumn
     private List<Application> applications;
 
     @ManyToOne

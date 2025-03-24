@@ -1,6 +1,7 @@
 package pt.sapiens.sapiensAPI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonManagedReference
     private Volunteer volunteer;
 
     @ManyToOne

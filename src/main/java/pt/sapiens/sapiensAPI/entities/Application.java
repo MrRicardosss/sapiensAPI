@@ -22,6 +22,5 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    @JsonIgnore
     private Offer offer;
 }

@@ -67,11 +67,8 @@ public class ApplicationService {
 
             return new ApiResponse<>(application);
 
-        } catch (ResponseStatusException e) {
-            // Rethrow ResponseStatusException to maintain the HTTP status code
-            throw e;
         } catch (RuntimeException e) {
-            return new ApiResponse<>(null);
+            return new ApiResponse<>(e.getMessage());
         }
     }
 
